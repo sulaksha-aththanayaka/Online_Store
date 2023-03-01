@@ -12,55 +12,55 @@ namespace Store.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToDoItemsController : ControllerBase
+    public class CustomersController : ControllerBase
     {
-        private readonly ToDoContext _context;
+        private readonly StoreContext _context;
 
-        public ToDoItemsController(ToDoContext context)
+        public CustomersController(StoreContext context)
         {
             _context = context;
         }
 
-        // GET: api/ToDoItems
+        // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ToDoItem>>> GetToDoItems()
+        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
-          if (_context.ToDoItems == null)
+          if (_context.Customers == null)
           {
               return NotFound();
           }
-            return await _context.ToDoItems.ToListAsync();
+            return await _context.Customers.ToListAsync();
         }
 
-        // GET: api/ToDoItems/5
+        // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ToDoItem>> GetToDoItem(int id)
+        public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-          if (_context.ToDoItems == null)
+          if (_context.Customers == null)
           {
               return NotFound();
           }
-            var toDoItem = await _context.ToDoItems.FindAsync(id);
+            var customer = await _context.Customers.FindAsync(id);
 
-            if (toDoItem == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return toDoItem;
+            return customer;
         }
 
-        // PUT: api/ToDoItems/5
+        // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutToDoItem(int id, ToDoItem toDoItem)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != toDoItem.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(toDoItem).State = EntityState.Modified;
+            _context.Entry(customer).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace Store.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ToDoItemExists(id))
+                if (!CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace Store.Controllers
             return NoContent();
         }
 
-        // POST: api/ToDoItems
+        // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ToDoItem>> PostToDoItem(ToDoItem toDoItem)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-          if (_context.ToDoItems == null)
+          if (_context.Customers == null)
           {
-              return Problem("Entity set 'ToDoContext.ToDoItems'  is null.");
+              return Problem("Entity set 'StoreContext.Customers'  is null.");
           }
-            _context.ToDoItems.Add(toDoItem);
+            _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetToDoItem", new { id = toDoItem.Id }, toDoItem);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
-        // DELETE: api/ToDoItems/5
+        // DELETE: api/Customers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteToDoItem(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            if (_context.ToDoItems == null)
+            if (_context.Customers == null)
             {
                 return NotFound();
             }
-            var toDoItem = await _context.ToDoItems.FindAsync(id);
-            if (toDoItem == null)
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.ToDoItems.Remove(toDoItem);
+            _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ToDoItemExists(int id)
+        private bool CustomerExists(int id)
         {
-            return (_context.ToDoItems?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
